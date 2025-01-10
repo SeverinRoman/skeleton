@@ -5,6 +5,9 @@
 #include "SkeletonCharacter.generated.h"
 
 
+class UGameInputComponent;
+
+
 UCLASS()
 class SKELETON_API ASkeletonCharacter : public ACharacter
 {
@@ -13,10 +16,16 @@ class SKELETON_API ASkeletonCharacter : public ACharacter
 public:
 	ASkeletonCharacter();
 
-protected:
-	virtual void BeginPlay() override;
+private:
+	UPROPERTY()
+	UGameInputComponent* GameInputComponent;
 
-public:	
+private:
+	UFUNCTION()
+	void Init();
+	
+private:
+	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
