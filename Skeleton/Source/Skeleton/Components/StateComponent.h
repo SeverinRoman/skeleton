@@ -29,6 +29,16 @@ public:
 	void SetState(EStateType NewState) { if (State == NewState) return; State = NewState; OnStateChange.Broadcast(NewState); };
 
 public:
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	float GetSpeed() { return Speed; };
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	float GetDirection() { return Direction; };
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	FVector GetVelocity() { return Velocity; };
+
+public:
 	UPROPERTY(BlueprintAssignable)
 	FOnStateChange OnStateChange;
 
