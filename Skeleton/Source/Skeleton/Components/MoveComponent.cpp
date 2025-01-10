@@ -36,6 +36,14 @@ void UMoveComponent::Init()
 	AnimationComponent = Owner->GetComponentByClass<UAnimationComponent>();
 }
 
+void UMoveComponent::Sprint()
+{
+	if(CharacterMovementComponent)
+	{
+		CharacterMovementComponent->MaxWalkSpeed = SprintSpeed;
+	}
+}
+
 void UMoveComponent::Run()
 {
 	if(CharacterMovementComponent)

@@ -20,10 +20,13 @@ public:
 
 public:
 	UPROPERTY(EditDefaultsOnly)
-	float WalkSpeed = 200.f;
+	float WalkSpeed = 207.113632f;
 
 	UPROPERTY(EditDefaultsOnly)
-	float RunSpeed = 450.f;
+	float RunSpeed = 516.988098f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float SprintSpeed = 724.596985f;
 
 public:
 	UFUNCTION(BlueprintCallable)
@@ -40,6 +43,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void UnJump();
+
+	UFUNCTION(BlueprintCallable)
+	void Sprint();
 	
 	UFUNCTION(BlueprintCallable)
 	void Run();
