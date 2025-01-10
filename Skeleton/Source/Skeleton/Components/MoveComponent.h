@@ -10,6 +10,17 @@ class UAnimationComponent;
 class UStateComponent;
 
 
+UENUM(BlueprintType)
+enum class EStartMoveType : uint8
+{
+	NONE = 0,
+
+	WALK = 1,
+	RUN = 2,
+	SPRINT = 3,
+};
+
+
 UCLASS(Blueprintable, BlueprintType, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class SKELETON_API UMoveComponent : public UActorComponent
 {
@@ -54,6 +65,10 @@ public:
 	void Walk();
 
 private:
+	UPROPERTY(EditDefaultsOnly)
+	EStartMoveType StartMoveType;
+
+private:
 	UPROPERTY()
 	AActor* Owner;
 	
@@ -76,6 +91,9 @@ private:
 	
 	UFUNCTION()
 	void StopStandBy();
+	
+	UFUNCTION()
+	void StartMove();
 
 private:	
 	virtual void BeginPlay() override;

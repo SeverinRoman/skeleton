@@ -34,6 +34,8 @@ void UMoveComponent::Init()
 	CharacterMovementComponent = Owner->GetComponentByClass<UCharacterMovementComponent>();
 	StateComponent = Owner->GetComponentByClass<UStateComponent>();
 	AnimationComponent = Owner->GetComponentByClass<UAnimationComponent>();
+
+	StartMove();
 }
 
 void UMoveComponent::Sprint()
@@ -124,5 +126,22 @@ void UMoveComponent::StopStandBy()
 	{
 		AnimationComponent->Stop();
 		StateComponent->SetState(EStateType::MOVE);
+	}
+}
+
+void UMoveComponent::StartMove()
+{
+	switch (StartMoveType) {
+	case EStartMoveType::NONE:
+		break;
+	case EStartMoveType::WALK:
+		Walk();
+		break;
+	case EStartMoveType::RUN:
+		Run();
+		break;
+	case EStartMoveType::SPRINT:
+		Sprint();
+		break;
 	}
 }
