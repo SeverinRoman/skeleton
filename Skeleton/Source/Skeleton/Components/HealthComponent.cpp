@@ -15,6 +15,8 @@ void UHealthComponent::BeginPlay()
 void UHealthComponent::Init()
 {
 	CurrentHealth = StartHealth;
+
+	OnHealthChange.Broadcast();
 }
 
 void UHealthComponent::Add(float Add)
@@ -26,7 +28,12 @@ void UHealthComponent::Add(float Add)
 	if (NewHealth >= MaxHealth)
 	{
 		CurrentHealth = MaxHealth;
+	}else
+	{
+		CurrentHealth = NewHealth;
 	}
+
+	OnHealthChange.Broadcast();
 }
 
 void UHealthComponent::Sub(float Sub)
@@ -35,11 +42,16 @@ void UHealthComponent::Sub(float Sub)
 	
 	float NewHealth = CurrentHealth - Sub;
 
-	if (NewHealth <= MaxHealth)
+	if (NewHealth <= 0.f)
 	{
 		CurrentHealth = 0.f;
 		Over();
+	}else
+	{
+		CurrentHealth = NewHealth;
 	}
+
+	OnHealthChange.Broadcast();
 }
 
 void UHealthComponent::Over()

@@ -5,6 +5,10 @@
 #include "HealthComponent.generated.h"
 
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthChange);
+
+
+
 UCLASS(Blueprintable, BlueprintType, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class SKELETON_API UHealthComponent : public UActorComponent
 {
@@ -20,11 +24,15 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void Sub(float Sub);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	float GetHealth() { return CurrentHealth; };
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, BlueprintPure)
 	float GetPercentHealth() { return CurrentHealth / MaxHealth; };
+
+public:
+	UPROPERTY(BlueprintAssignable)
+	FOnHealthChange OnHealthChange;
 
 private:
 	UPROPERTY(EditDefaultsOnly)
