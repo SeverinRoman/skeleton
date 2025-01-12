@@ -1,6 +1,6 @@
 #include "SkeletonCharacter.h"
 
-#include "GameInputComponent.h"
+#include "InputCatcherComponent.h"
 
 
 ASkeletonCharacter::ASkeletonCharacter()
@@ -27,11 +27,11 @@ void ASkeletonCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 
 void ASkeletonCharacter::Init()
 {
-	GameInputComponent = FindComponentByClass<UGameInputComponent>();
+	InputCatcherComponent = FindComponentByClass<UInputCatcherComponent>();
 
-	if (GameInputComponent)
+	if (InputCatcherComponent)
 	{
-		GameInputComponent->SetupPlayerInputComponent(InputComponent);
+		InputCatcherComponent->SetupPlayerInputComponent(InputComponent);
 	}
 }
 

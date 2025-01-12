@@ -5,7 +5,7 @@
 #include "SkeletonCharacter.generated.h"
 
 
-class UGameInputComponent;
+class UInputCatcherComponent;
 
 
 UCLASS()
@@ -18,7 +18,7 @@ public:
 
 private:
 	UPROPERTY()
-	UGameInputComponent* GameInputComponent;
+	UInputCatcherComponent* InputCatcherComponent;
 
 private:
 	UFUNCTION()
