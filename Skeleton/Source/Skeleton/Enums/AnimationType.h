@@ -7,5 +7,6 @@ enum class EAnimationType : uint8
 {
 	NONE = 0,
 
-	DODGE = 1,
+	JUMP = 1,
+	DODGE = 2,
 };

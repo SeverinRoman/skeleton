@@ -6,6 +6,7 @@
 
 
 class UInputCatcherComponent;
+class UJumpComponent;
 class UDodgeComponent;
 class UMoveComponent;
 class ACharacter;
@@ -25,6 +26,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly)
 	float DurationRun = 0.5f;
+	
+	UPROPERTY(EditDefaultsOnly)
+	float DurationJump = 0.5f;
 
 private:
 	UPROPERTY()
@@ -37,7 +41,13 @@ private:
 	FTimerHandle TimerHandleRun;
 	
 	UPROPERTY()
+	FTimerHandle TimerHandleJump;
+	
+	UPROPERTY()
 	bool IsSprint = false;
+	
+	UPROPERTY()
+	bool bJump = false;
 	
 private:
 	UPROPERTY()
@@ -48,6 +58,9 @@ private:
 	
 	UPROPERTY()
 	UMoveComponent* MoveComponent;
+	
+	UPROPERTY()
+	UJumpComponent* JumpComponent;
 	
 	UPROPERTY()
 	ACharacter* Character;

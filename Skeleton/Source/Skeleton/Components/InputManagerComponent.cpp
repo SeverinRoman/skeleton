@@ -3,6 +3,7 @@
 #include "InputCatcherComponent.h"
 #include "MoveComponent.h"
 #include "DodgeComponent.h"
+#include "JumpComponent.h"
 
 #include "GameFramework/Character.h"
 
@@ -28,6 +29,7 @@ void UInputManagerComponent::Init()
 	InputCatcherComponent = Owner->GetComponentByClass<UInputCatcherComponent>();
 	MoveComponent = Owner->GetComponentByClass<UMoveComponent>();
 	DodgeComponent = Owner->GetComponentByClass<UDodgeComponent>();
+	JumpComponent = Owner->GetComponentByClass<UJumpComponent>();
 	Character = Cast<ACharacter>(Owner);
 
 	if (InputCatcherComponent)
@@ -63,10 +65,24 @@ void UInputManagerComponent::OnInputLook(const FInputActionInstance InputActionI
 
 void UInputManagerComponent::OnInputDodgeRunJump(const FInputActionInstance InputActionInstance, const bool IsPressed) 
 {
-	if (!DodgeComponent || !MoveComponent || !World) return;
+	if (!DodgeComponent || !MoveComponent || !JumpComponent || !World) return;
 	
 	if (IsPressed)
 	{
+		if (bJump)
+		{
+			bJump = false;
+			IsSprint = true;
+			
+			World->GetTimerManager().ClearTimer(TimerHandleRun);
+			World->GetTimerManager().ClearTimer(TimerHandleJump);
+			
+			JumpComponent->Try();
+			MoveComponent->Sprint();
+			return;
+		}
+
+		
 		IsSprint = false;
 		World->GetTimerManager().SetTimer(TimerHandleRun, [&]() { IsSprint = true; MoveComponent->Sprint(); }, DurationRun, false);
 	}
@@ -80,7 +96,13 @@ void UInputManagerComponent::OnInputDodgeRunJump(const FInputActionInstance Inpu
 		{
 			DodgeComponent->Dodge();
 		}
-		
+
+		if (IsSprint)
+		{
+			bJump = true;
+			World->GetTimerManager().SetTimer(TimerHandleJump, [&]() { bJump = false; }, DurationJump, false);
+		}
+
 		IsSprint = false;
 	}
 }

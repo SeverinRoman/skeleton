@@ -47,18 +47,6 @@ public:
 public:
 	UFUNCTION(BlueprintCallable)
 	void Move(float X, float Y);
-	
-	UFUNCTION(BlueprintCallable)
-	void Crouch();
-	
-	UFUNCTION(BlueprintCallable)
-	void UnCrouch();
-	
-	UFUNCTION(BlueprintCallable)
-	void Jump();
-	
-	UFUNCTION(BlueprintCallable)
-	void UnJump();
 
 	UFUNCTION(BlueprintCallable)
 	void Sprint();

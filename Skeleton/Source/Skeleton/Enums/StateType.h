@@ -13,4 +13,5 @@ enum class EStateType : uint8
 	STANDBY = 5,
 
 	DODGE = 6,
+	JUMP = 7,
 };

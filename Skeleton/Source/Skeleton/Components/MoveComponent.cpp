@@ -6,6 +6,7 @@
 
 #include "StateComponent.h"
 #include "AnimationComponent.h"
+#include "AnimationType.h"
 #include "StaminaComponent.h"
 
 
@@ -109,38 +110,6 @@ void UMoveComponent::Move(float X, float Y)
 	}
 
 	StopStandBy();
-}
-
-void UMoveComponent::Crouch()
-{
-	if(Character)
-	{
-		Character->Crouch();
-	}
-}
-
-void UMoveComponent::UnCrouch()
-{
-	if(Character)
-	{
-		Character->UnCrouch();
-	}
-}
-
-void UMoveComponent::Jump()
-{
-	if(Character)
-	{
-		Character->Jump();
-	}
-}
-
-void UMoveComponent::UnJump()
-{
-	if(Character)
-	{
-		Character->StopJumping();
-	}
 }
 
 void UMoveComponent::StopStandBy()
