@@ -8,10 +8,11 @@
 class UCharacterMovementComponent;
 class UAnimationComponent;
 class UStateComponent;
+class UStaminaComponent;
 
 
 UENUM(BlueprintType)
-enum class EStartMoveType : uint8
+enum class EMoveType : uint8
 {
 	NONE = 0,
 
@@ -28,6 +29,10 @@ class SKELETON_API UMoveComponent : public UActorComponent
 
 public:
 	UMoveComponent();
+
+public:
+	UFUNCTION()
+	EMoveType GetMove() { return CurrentMove; };
 
 public:
 	UPROPERTY(EditDefaultsOnly)
@@ -66,7 +71,7 @@ public:
 
 private:
 	UPROPERTY(EditDefaultsOnly)
-	EStartMoveType StartMoveType;
+	EMoveType StartMove;
 
 private:
 	UPROPERTY()
@@ -74,6 +79,9 @@ private:
 	
 	UPROPERTY()
 	ACharacter* Character;
+
+	UPROPERTY(EditDefaultsOnly)
+	EMoveType CurrentMove;
 
 private:
 	UPROPERTY()
@@ -84,6 +92,9 @@ private:
 
 	UPROPERTY()
 	UAnimationComponent* AnimationComponent;
+	
+	UPROPERTY()
+	UStaminaComponent* StaminaComponent;
 
 private:
 	UFUNCTION()
@@ -91,9 +102,10 @@ private:
 	
 	UFUNCTION()
 	void StopStandBy();
-	
+
+private:
 	UFUNCTION()
-	void StartMove();
+	void OnStaminaEnd();
 
 private:	
 	virtual void BeginPlay() override;

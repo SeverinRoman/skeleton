@@ -6,6 +6,7 @@
 
 #include "StateComponent.h"
 #include "AnimationComponent.h"
+#include "StaminaComponent.h"
 
 
 UMoveComponent::UMoveComponent()
@@ -33,9 +34,27 @@ void UMoveComponent::Init()
 	
 	CharacterMovementComponent = Owner->GetComponentByClass<UCharacterMovementComponent>();
 	StateComponent = Owner->GetComponentByClass<UStateComponent>();
+	StaminaComponent = Owner->GetComponentByClass<UStaminaComponent>();
 	AnimationComponent = Owner->GetComponentByClass<UAnimationComponent>();
 
-	StartMove();
+	if (StaminaComponent)
+	{
+		StaminaComponent->OnStaminaEnd.AddDynamic(this, &UMoveComponent::OnStaminaEnd);
+	}
+
+	switch (StartMove) {
+	case EMoveType::NONE:
+		break;
+	case EMoveType::WALK:
+		Walk();
+		break;
+	case EMoveType::RUN:
+		Run();
+		break;
+	case EMoveType::SPRINT:
+		Sprint();
+		break;
+	}
 }
 
 void UMoveComponent::Sprint()
@@ -44,6 +63,8 @@ void UMoveComponent::Sprint()
 	{
 		CharacterMovementComponent->MaxWalkSpeed = SprintSpeed;
 	}
+
+	CurrentMove = EMoveType::SPRINT;
 }
 
 void UMoveComponent::Run()
@@ -52,6 +73,8 @@ void UMoveComponent::Run()
 	{
 		CharacterMovementComponent->MaxWalkSpeed = RunSpeed;
 	}
+
+	CurrentMove = EMoveType::RUN;
 }
 
 void UMoveComponent::Walk()
@@ -60,6 +83,8 @@ void UMoveComponent::Walk()
 	{
 		CharacterMovementComponent->MaxWalkSpeed = WalkSpeed;
 	}
+	
+	CurrentMove = EMoveType::WALK;
 }
 
 void UMoveComponent::Move(float X, float Y)
@@ -129,19 +154,7 @@ void UMoveComponent::StopStandBy()
 	}
 }
 
-void UMoveComponent::StartMove()
+void UMoveComponent::OnStaminaEnd()
 {
-	switch (StartMoveType) {
-	case EStartMoveType::NONE:
-		break;
-	case EStartMoveType::WALK:
-		Walk();
-		break;
-	case EStartMoveType::RUN:
-		Run();
-		break;
-	case EStartMoveType::SPRINT:
-		Sprint();
-		break;
-	}
+	Run();
 }

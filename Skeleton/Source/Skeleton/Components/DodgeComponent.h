@@ -7,6 +7,7 @@
 
 class UAnimationComponent;
 class UStateComponent;
+class UStaminaComponent;
 
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -26,6 +27,10 @@ public:
 	void Dodge();
 
 private:
+	UPROPERTY(EditDefaultsOnly)
+	float Stamina = 10.f;
+
+private:
 	UPROPERTY()
 	AActor* Owner;
 
@@ -35,6 +40,9 @@ private:
 	
 	UPROPERTY()
 	UStateComponent* StateComponent;
+	
+	UPROPERTY()
+	UStaminaComponent* StaminaComponent;
 
 private:
 	UFUNCTION()

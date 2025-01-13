@@ -6,6 +6,11 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStaminaChange);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnStaminaEnd);
+
+
+class UStateComponent;
+class UMoveComponent;
 
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -32,8 +37,14 @@ public:
 public:
 	UPROPERTY(BlueprintAssignable)
 	FOnStaminaChange OnStaminaChange;
+	
+	UPROPERTY(BlueprintAssignable)
+	FOnStaminaEnd OnStaminaEnd;
 
 private:
+	UPROPERTY(EditDefaultsOnly)
+	float RegenerationDelay = 0.1f;
+	
 	UPROPERTY(EditDefaultsOnly)
 	float MaxStamina = 100.f;
 	
@@ -44,6 +55,22 @@ private:
 	bool IsDebug = false;
 
 private:
+	UPROPERTY()
+	UStateComponent* StateComponent;
+
+	UPROPERTY()
+	UMoveComponent* MoveComponent;
+
+private:
+	UPROPERTY()
+	UWorld* World;
+	
+	UPROPERTY()
+	AActor* Owner;
+	
+	UPROPERTY()
+	FTimerHandle RegenerationTimerHandle;	
+	
 	UPROPERTY()
 	float CurrentStamina;
 
@@ -56,7 +83,12 @@ private:
 	
 	UFUNCTION()
 	void Over();
-
+	
+	UFUNCTION()
+	void Regeneration();
+	
+	UFUNCTION()
+	bool Deterioration();
 
 private:	
 	virtual void BeginPlay() override;

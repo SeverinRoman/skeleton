@@ -2,6 +2,7 @@
 
 #include "AnimationComponent.h"
 #include "StateComponent.h"
+#include "StaminaComponent.h"
 
 #include "AnimationType.h"
 
@@ -24,18 +25,21 @@ void UDodgeComponent::Init()
 
 	AnimationComponent = Owner->GetComponentByClass<UAnimationComponent>();
 	StateComponent = Owner->GetComponentByClass<UStateComponent>();
+	StaminaComponent = Owner->GetComponentByClass<UStaminaComponent>();
 }
 
 void UDodgeComponent::Dodge()
 {
-	if (!StateComponent) return;
+	if (!StateComponent && StaminaComponent) return;
 
 	EStateType State = StateComponent->GetState();
 
-	if (State == EStateType::IDLE || State == EStateType::MOVE)
-	{
-		DodgeStart();
-	}
+	if (State != EStateType::IDLE && State != EStateType::MOVE) return;
+
+	if (StaminaComponent->GetStamina() < Stamina) return;
+	
+	StaminaComponent->Sub(Stamina);
+	DodgeStart();
 }
 
 void UDodgeComponent::DodgeStart()
