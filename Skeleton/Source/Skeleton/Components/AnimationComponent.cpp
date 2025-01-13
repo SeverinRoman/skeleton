@@ -2,6 +2,7 @@
 
 #include "AnimationType.h"
 #include "StandByAnimationType.h"
+#include "SwordAnimationType.h"
 
 
 UAnimationComponent::UAnimationComponent()
@@ -35,8 +36,6 @@ void UAnimationComponent::PlayBase(EAnimationType Animation)
 	}
 }
 
-
-
 void UAnimationComponent::Play(UAnimMontage* AnimMontage)
 {
 	if (AnimInstance && AnimMontage)
@@ -51,6 +50,14 @@ void UAnimationComponent::PlayStandBy(EStandByAnimationType StandByAnimation)
 	if (!StandByAnimations.Contains(StandByAnimation)) return;
 
 	Play(StandByAnimations[StandByAnimation]);
+}
+
+void UAnimationComponent::PlaySword(ESwordAnimationType StandByAnimation)
+{
+	if (StandByAnimation == ESwordAnimationType::NONE) return;
+	if (!SwordAnimations.Contains(StandByAnimation)) return;
+
+	Play(SwordAnimations[StandByAnimation]);
 }
 
 void UAnimationComponent::Stop(float Blend)

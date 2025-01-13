@@ -36,7 +36,11 @@ void UInputManagerComponent::Init()
 	{
 		InputCatcherComponent->OnInputMove.AddDynamic(this, &UInputManagerComponent::OnInputMove);
 		InputCatcherComponent->OnInputLook.AddDynamic(this, &UInputManagerComponent::OnInputLook);
+		
 		InputCatcherComponent->OnInputDodgeRunJump.AddDynamic(this, &UInputManagerComponent::OnInputDodgeRunJump);
+
+		InputCatcherComponent->OnInputAttackWeak.AddDynamic(this, &UInputManagerComponent::OnInputAttackWeak);
+		InputCatcherComponent->OnInputAttackStrong.AddDynamic(this, &UInputManagerComponent::OnInputAttackStrong);
 	}
 }
 
@@ -105,5 +109,15 @@ void UInputManagerComponent::OnInputDodgeRunJump(const FInputActionInstance Inpu
 
 		IsSprint = false;
 	}
+}
+
+void UInputManagerComponent::OnInputAttackWeak(const FInputActionInstance InputActionInstance, const bool IsPressed) 
+{
+	
+}
+
+void UInputManagerComponent::OnInputAttackStrong(const FInputActionInstance InputActionInstance, const bool IsPressed) 
+{
+	
 }
 

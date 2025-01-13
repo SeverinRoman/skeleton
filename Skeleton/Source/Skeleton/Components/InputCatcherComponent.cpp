@@ -55,7 +55,12 @@ void UInputCatcherComponent::BindInputs()
 	EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Completed, this, &UInputCatcherComponent::OnInputLookCompleted);
 
 	EnhancedInputComponent->BindAction(DodgeRunJumpAction, ETriggerEvent::Started, this, &UInputCatcherComponent::OnInputDodgeRunJumpStarted);
-	// EnhancedInputComponent->BindAction(DodgeRunJumpAction, ETriggerEvent::Triggered, this, &UInputCatcherComponent::OnInputDodgeRunJumpTriggered);
 	EnhancedInputComponent->BindAction(DodgeRunJumpAction, ETriggerEvent::Completed, this, &UInputCatcherComponent::OnInputDodgeRunJumpCompleted);
+	
+	EnhancedInputComponent->BindAction(WeakAttackAction, ETriggerEvent::Started, this, &UInputCatcherComponent::OnInputAttackWeakStarted);
+	EnhancedInputComponent->BindAction(WeakAttackAction, ETriggerEvent::Completed, this, &UInputCatcherComponent::OnInputAttackWeakCompleted);
+
+	EnhancedInputComponent->BindAction(StrongAttackAction, ETriggerEvent::Started, this, &UInputCatcherComponent::OnInputAttackStrongStarted);
+	EnhancedInputComponent->BindAction(StrongAttackAction, ETriggerEvent::Completed, this, &UInputCatcherComponent::OnInputAttackStrongCompleted);
 }
 

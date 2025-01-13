@@ -78,6 +78,12 @@ private:
 	
 	UFUNCTION()
 	void OnInputDodgeRunJump(const FInputActionInstance InputActionInstance, const bool IsPressed);
+	
+	UFUNCTION()
+	void OnInputAttackWeak(const FInputActionInstance InputActionInstance, const bool IsPressed);
+
+	UFUNCTION()
+	void OnInputAttackStrong(const FInputActionInstance InputActionInstance, const bool IsPressed);
 
 private:
 	virtual void BeginPlay() override;

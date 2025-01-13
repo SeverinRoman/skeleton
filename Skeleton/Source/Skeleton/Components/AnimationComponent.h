@@ -30,6 +30,9 @@ public:
 
 public:
 	UFUNCTION()
+	void PlaySword(ESwordAnimationType StandByAnimation);
+	
+	UFUNCTION()
 	void PlayStandBy(EStandByAnimationType StandByAnimation);
 
 	UFUNCTION()
@@ -41,6 +44,9 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly)
 	TMap<EStandByAnimationType, UAnimMontage*> StandByAnimations;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TMap<ESwordAnimationType, UAnimMontage*> SwordAnimations;
 	
 private:
 	UPROPERTY()

@@ -18,6 +18,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInputLook, FInputActionInstance, 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInputDodgeRunJump, FInputActionInstance, InputActionInstance, bool, IsPressed);
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInputAttackWeak, FInputActionInstance, InputActionInstance, bool, IsPressed);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInputAttackStrong, FInputActionInstance, InputActionInstance, bool, IsPressed);
+
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class SKELETON_API UInputCatcherComponent : public UActorComponent
@@ -41,6 +44,12 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnInputDodgeRunJump OnInputDodgeRunJump;
 	
+	UPROPERTY(BlueprintAssignable)
+	FOnInputAttackWeak OnInputAttackWeak;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnInputAttackStrong OnInputAttackStrong;
+	
 private:
 	UPROPERTY(EditDefaultsOnly)
 	UInputMappingContext* InputMapping;
@@ -60,6 +69,12 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Action")
 	UInputAction* DodgeRunJumpAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Action")
+	UInputAction* WeakAttackAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Action")
+	UInputAction* StrongAttackAction;
 
 private:
 	UPROPERTY()
@@ -98,12 +113,23 @@ private:
 	
 	UFUNCTION()
 	void OnInputDodgeRunJumpStarted(const FInputActionInstance& InputActionInstance) { OnInputDodgeRunJump.Broadcast(InputActionInstance, true);};
-
-	// UFUNCTION()
-	// void OnInputDodgeRunJumpTriggered(const FInputActionInstance& InputActionInstance) { OnInputDodgeRunJump.Broadcast(InputActionInstance);};
-
+	
 	UFUNCTION()
 	void OnInputDodgeRunJumpCompleted(const FInputActionInstance& InputActionInstance) { OnInputDodgeRunJump.Broadcast(InputActionInstance, false);};
+
+
+	UFUNCTION()
+	void OnInputAttackWeakStarted(const FInputActionInstance& InputActionInstance) { OnInputAttackWeak.Broadcast(InputActionInstance, true);};
+	
+	UFUNCTION()
+	void OnInputAttackWeakCompleted(const FInputActionInstance& InputActionInstance) { OnInputAttackWeak.Broadcast(InputActionInstance, false);};
+
+
+	UFUNCTION()
+	void OnInputAttackStrongStarted(const FInputActionInstance& InputActionInstance) { OnInputAttackStrong.Broadcast(InputActionInstance, true);};
+	
+	UFUNCTION()
+	void OnInputAttackStrongCompleted(const FInputActionInstance& InputActionInstance) { OnInputAttackStrong.Broadcast(InputActionInstance, false);};
 	
 private:
 	virtual void BeginPlay() override;
