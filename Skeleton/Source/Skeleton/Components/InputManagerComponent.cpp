@@ -2,6 +2,7 @@
 
 #include "InputCatcherComponent.h"
 #include "MoveComponent.h"
+#include "DodgeComponent.h"
 
 #include "GameFramework/Character.h"
 
@@ -22,18 +23,22 @@ void UInputManagerComponent::Init()
 	Owner = GetOwner();
 	if (!Owner) return;
 
+	World = GetWorld();
+
 	InputCatcherComponent = Owner->GetComponentByClass<UInputCatcherComponent>();
 	MoveComponent = Owner->GetComponentByClass<UMoveComponent>();
+	DodgeComponent = Owner->GetComponentByClass<UDodgeComponent>();
 	Character = Cast<ACharacter>(Owner);
 
 	if (InputCatcherComponent)
 	{
 		InputCatcherComponent->OnInputMove.AddDynamic(this, &UInputManagerComponent::OnInputMove);
 		InputCatcherComponent->OnInputLook.AddDynamic(this, &UInputManagerComponent::OnInputLook);
+		InputCatcherComponent->OnInputDodgeRunJump.AddDynamic(this, &UInputManagerComponent::OnInputDodgeRunJump);
 	}
 }
 
-void UInputManagerComponent::OnInputMove(FInputActionInstance InputActionInstance)
+void UInputManagerComponent::OnInputMove(const FInputActionInstance InputActionInstance)
 {
 	float X = InputActionInstance.GetValue().Get<FVector2D>().X;
 	float Y = InputActionInstance.GetValue().Get<FVector2D>().Y;
@@ -44,7 +49,7 @@ void UInputManagerComponent::OnInputMove(FInputActionInstance InputActionInstanc
 	}
 }
 
-void UInputManagerComponent::OnInputLook(FInputActionInstance InputActionInstance)
+void UInputManagerComponent::OnInputLook(const FInputActionInstance InputActionInstance) 
 {
 	float X = InputActionInstance.GetValue().Get<FVector2D>().X;
 	float Y = InputActionInstance.GetValue().Get<FVector2D>().Y;
@@ -53,6 +58,30 @@ void UInputManagerComponent::OnInputLook(FInputActionInstance InputActionInstanc
 	{
 		Character->AddControllerYawInput(X);
 		Character->AddControllerPitchInput(Y);
+	}
+}
+
+void UInputManagerComponent::OnInputDodgeRunJump(const FInputActionInstance InputActionInstance, const bool IsPressed) 
+{
+	if (!DodgeComponent || !MoveComponent || !World) return;
+	
+	if (IsPressed)
+	{
+		IsSprint = false;
+		World->GetTimerManager().SetTimer(TimerHandleRun, [&]() { IsSprint = true; MoveComponent->Sprint(); }, DurationRun, false);
+	}
+	else
+	{
+		World->GetTimerManager().ClearTimer(TimerHandleRun);
+		
+		MoveComponent->Run();
+
+		if (!IsSprint)
+		{
+			DodgeComponent->Dodge();
+		}
+		
+		IsSprint = false;
 	}
 }
 

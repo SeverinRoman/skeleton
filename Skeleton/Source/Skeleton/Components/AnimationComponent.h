@@ -32,6 +32,9 @@ public:
 	UFUNCTION()
 	void PlayStandBy(EStandByAnimationType StandByAnimation);
 
+	UFUNCTION()
+	void PlayBase(EAnimationType Animation);
+
 private:
 	UPROPERTY(EditDefaultsOnly)
 	TMap<EAnimationType, UAnimMontage*> Animations;

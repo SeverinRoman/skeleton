@@ -1,5 +1,6 @@
 #include "AnimationComponent.h"
 
+#include "AnimationType.h"
 #include "StandByAnimationType.h"
 
 
@@ -25,6 +26,16 @@ void UAnimationComponent::Init()
 	AnimInstance = SkeletalMeshComponent->GetAnimInstance();
 
 }
+
+void UAnimationComponent::PlayBase(EAnimationType Animation)
+{
+	if (AnimInstance && Animation != EAnimationType::NONE && Animations.Contains(Animation))
+	{
+		Play(Animations[Animation]);
+	}
+}
+
+
 
 void UAnimationComponent::Play(UAnimMontage* AnimMontage)
 {

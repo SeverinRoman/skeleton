@@ -11,4 +11,6 @@ enum class EStateType : uint8
 	MOVE = 2,
 	FALLING = 4,
 	STANDBY = 5,
+
+	DODGE = 6,
 };

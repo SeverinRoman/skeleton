@@ -16,7 +16,7 @@ class UInputMappingContext;
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInputMove, FInputActionInstance, InputActionInstance);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInputLook, FInputActionInstance, InputActionInstance);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnInputDodgeRunJump, FInputActionInstance, InputActionInstance);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnInputDodgeRunJump, FInputActionInstance, InputActionInstance, bool, IsPressed);
 
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -97,13 +97,13 @@ private:
 
 	
 	UFUNCTION()
-	void OnInputDodgeRunJumpStarted(const FInputActionInstance& InputActionInstance) { OnInputDodgeRunJump.Broadcast(InputActionInstance);};
+	void OnInputDodgeRunJumpStarted(const FInputActionInstance& InputActionInstance) { OnInputDodgeRunJump.Broadcast(InputActionInstance, true);};
+
+	// UFUNCTION()
+	// void OnInputDodgeRunJumpTriggered(const FInputActionInstance& InputActionInstance) { OnInputDodgeRunJump.Broadcast(InputActionInstance);};
 
 	UFUNCTION()
-	void OnInputDodgeRunJumpTriggered(const FInputActionInstance& InputActionInstance) { OnInputDodgeRunJump.Broadcast(InputActionInstance);};
-
-	UFUNCTION()
-	void OnInputDodgeRunJumpCompleted(const FInputActionInstance& InputActionInstance) { OnInputDodgeRunJump.Broadcast(InputActionInstance);};
+	void OnInputDodgeRunJumpCompleted(const FInputActionInstance& InputActionInstance) { OnInputDodgeRunJump.Broadcast(InputActionInstance, false);};
 	
 private:
 	virtual void BeginPlay() override;

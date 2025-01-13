@@ -6,6 +6,7 @@
 
 
 class UInputCatcherComponent;
+class UDodgeComponent;
 class UMoveComponent;
 class ACharacter;
 
@@ -22,13 +23,28 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	bool IsDebug = false;
 
+	UPROPERTY(EditDefaultsOnly)
+	float DurationRun = 0.5f;
+
 private:
 	UPROPERTY()
+	UWorld* World;
+	
+	UPROPERTY()
 	AActor* Owner;
+	
+	UPROPERTY()
+	FTimerHandle TimerHandleRun;
+	
+	UPROPERTY()
+	bool IsSprint = false;
 	
 private:
 	UPROPERTY()
 	UInputCatcherComponent* InputCatcherComponent;
+	
+	UPROPERTY()
+	UDodgeComponent* DodgeComponent;
 	
 	UPROPERTY()
 	UMoveComponent* MoveComponent;
@@ -42,10 +58,13 @@ private:
 
 private:
 	UFUNCTION()
-	void OnInputMove(FInputActionInstance InputActionInstance);
+	void OnInputMove(const FInputActionInstance InputActionInstance);
 
 	UFUNCTION()
-	void OnInputLook(FInputActionInstance InputActionInstance);
+	void OnInputLook(const FInputActionInstance InputActionInstance);
+	
+	UFUNCTION()
+	void OnInputDodgeRunJump(const FInputActionInstance InputActionInstance, const bool IsPressed);
 
 private:
 	virtual void BeginPlay() override;
