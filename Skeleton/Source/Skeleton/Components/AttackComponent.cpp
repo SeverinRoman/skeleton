@@ -4,6 +4,7 @@
 #include "AnimationComponent.h"
 #include "SwordAnimationType.h"
 #include "StateComponent.h"
+#include "StaminaComponent.h"
 
 
 UAttackComponent::UAttackComponent()
@@ -25,6 +26,7 @@ void UAttackComponent::Init()
 	WeaponComponent = Owner->FindComponentByClass<UWeaponComponent>();
 	AnimationComponent = Owner->FindComponentByClass<UAnimationComponent>();
 	StateComponent = Owner->FindComponentByClass<UStateComponent>();
+	StaminaComponent = Owner->FindComponentByClass<UStaminaComponent>();
 
 	UpdateWeapon();
 }
@@ -50,13 +52,20 @@ void UAttackComponent::RightWeak()
 	}
 	
 	if (State != EStateType::IDLE && State != EStateType::MOVE) return;
-	
+
+	ResetCombo();
 	Attack(EAttackType::RIGHT_WEAK);
 }
 
 void UAttackComponent::RightStrong()
 {
-	
+	if (!AnimationComponent || !StateComponent) return;
+
+	EStateType State = StateComponent->GetState();
+	if (State != EStateType::IDLE && State != EStateType::MOVE) return;
+
+	ResetCombo();
+	Attack(EAttackType::RIGHT_STRONG);
 }
 
 void UAttackComponent::LeftWeak()
@@ -71,6 +80,27 @@ void UAttackComponent::LeftStrong()
 
 void UAttackComponent::Attack(EAttackType AttackType)
 {
+	if (AttackType == EAttackType::NONE) return;
+	
+	switch (AttackType) {
+	case EAttackType::LEFT_WEAK:
+		if (StaminaComponent->GetStamina() < StaminaWeakAttack) return;
+		StaminaComponent->Sub(StaminaWeakAttack);
+		break;
+	case EAttackType::RIGHT_WEAK:
+		if (StaminaComponent->GetStamina() < StaminaWeakAttack) return;
+		StaminaComponent->Sub(StaminaWeakAttack);
+		break;
+	case EAttackType::LEFT_STRONG:
+		if (StaminaComponent->GetStamina() < StaminaStrongAttack) return;
+		StaminaComponent->Sub(StaminaStrongAttack);
+		break;
+	case EAttackType::RIGHT_STRONG:
+		if (StaminaComponent->GetStamina() < StaminaStrongAttack) return;
+		StaminaComponent->Sub(StaminaStrongAttack);
+		break;
+	}
+	
 	if (StateComponent)
 	{
 		StateComponent->SetState(EStateType::ATTACK);
@@ -86,22 +116,23 @@ void UAttackComponent::Animation(EAttackType AttackType)
 	UpdateWeapon();
 	
 	switch (AttackType) {
-	case EAttackType::LEFT_WEAK:
-		break;
 	case EAttackType::RIGHT_WEAK:
-		SwordAnimation();
-		break;
-	case EAttackType::LEFT_STRONG:
+		SwordAnimationWeak();
 		break;
 	case EAttackType::RIGHT_STRONG:
+		SwordAnimationStrong();
+		break;
+	case EAttackType::LEFT_WEAK:
+		break;
+	case EAttackType::LEFT_STRONG:
 		break;
 	}
 }
 
-void UAttackComponent::SwordAnimation()
+void UAttackComponent::SwordAnimationWeak()
 {
 	if (WeaponRight != EWeaponRightType::SWORD) return;
-	UE_LOG(LogTemp, Warning, TEXT("UAttackComponent::SwordAnimation %d"), Combo);
+
 	switch (Combo)
 		{
 	case 0:
@@ -119,6 +150,21 @@ void UAttackComponent::SwordAnimation()
 	if (Combo == 3) Combo = 0;
 }
 
+void UAttackComponent::SwordAnimationStrong()
+{
+	if (WeaponRight != EWeaponRightType::SWORD) return;
+
+	switch (Combo)
+	{
+	case 0:
+		AnimationComponent->PlaySword(ESwordAnimationType::SWORD_STRONG_ATTACK_0);
+		break;
+	}
+	
+	Combo++;
+	if (Combo == 1) Combo = 0;
+}
+
 void UAttackComponent::CheckCombo()
 {
 	if (IsCombo)
@@ -130,11 +176,18 @@ void UAttackComponent::CheckCombo()
 
 void UAttackComponent::AttackEnd()
 {
-	if (StateComponent && !IsCombo || Combo == 0)
+	if (StateComponent)
 	{
 		StateComponent->SetState(EStateType::IDLE);
-		Combo = 0;
+		
 	}
+	ResetCombo();
+}
+
+void UAttackComponent::ResetCombo()
+{
+	Combo = 0;
+	IsCombo = false;
 }
 
 

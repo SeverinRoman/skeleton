@@ -109,6 +109,8 @@ void UMoveComponent::Move(float X, float Y)
 		Character->AddMovementInput(DirectionY, Y);
 	}
 
+
+	StopAnimation();
 	StopStandBy();
 }
 
@@ -120,6 +122,17 @@ void UMoveComponent::StopStandBy()
 	{
 		AnimationComponent->Stop();
 		StateComponent->SetState(EStateType::MOVE);
+	}
+}
+
+void UMoveComponent::StopAnimation()
+{
+	if (!AnimationComponent || !StateComponent) return;
+
+	EStateType State = StateComponent->GetState();
+	if (State == EStateType::IDLE)
+	{
+		AnimationComponent->Stop();
 	}
 }
 

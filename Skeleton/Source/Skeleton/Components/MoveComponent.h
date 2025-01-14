@@ -94,6 +94,9 @@ private:
 private:
 	UFUNCTION()
 	void OnStaminaEnd();
+	
+	UFUNCTION()
+	void StopAnimation();
 
 private:	
 	virtual void BeginPlay() override;

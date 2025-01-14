@@ -8,6 +8,7 @@
 class UWeaponComponent;
 class UAnimationComponent;
 class UStateComponent;
+class UStaminaComponent;
 
 enum class EWeaponRightType : uint8;
 enum class EWeaponLeftType : uint8;
@@ -53,6 +54,21 @@ public:
 
 	UFUNCTION()
 	void LeftStrong();
+	
+private:
+	UPROPERTY(EditDefaultsOnly)
+	float StaminaWeakAttack = 10.f;
+
+	UPROPERTY(EditDefaultsOnly)
+	float StaminaStrongAttack = 20.f;
+	
+private:
+	UPROPERTY(VisibleInstanceOnly)
+	EWeaponRightType WeaponRight;
+
+
+	UPROPERTY(VisibleInstanceOnly)
+	EWeaponLeftType WeaponLeft;
 
 private:
 	UPROPERTY()
@@ -64,13 +80,8 @@ private:
 	UPROPERTY()
 	UStateComponent* StateComponent;
 	
-private:
-	UPROPERTY(VisibleInstanceOnly)
-	EWeaponRightType WeaponRight;
-
-
-	UPROPERTY(VisibleInstanceOnly)
-	EWeaponLeftType WeaponLeft;
+	UPROPERTY()
+	UStaminaComponent* StaminaComponent;
 
 private:
 	UPROPERTY()
@@ -93,7 +104,13 @@ private:
 	void Animation(EAttackType AttackType);
 
 	UFUNCTION()
-	void SwordAnimation();
+	void SwordAnimationWeak();
+	
+	UFUNCTION()
+	void SwordAnimationStrong();
+	
+	UFUNCTION()
+	void ResetCombo();
 
 private:
 	virtual void BeginPlay() override;
