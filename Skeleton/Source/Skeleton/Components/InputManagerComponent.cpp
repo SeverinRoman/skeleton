@@ -4,6 +4,7 @@
 #include "MoveComponent.h"
 #include "DodgeComponent.h"
 #include "JumpComponent.h"
+#include "AttackComponent.h"
 
 #include "GameFramework/Character.h"
 
@@ -26,11 +27,14 @@ void UInputManagerComponent::Init()
 
 	World = GetWorld();
 
+	Character = Cast<ACharacter>(Owner);
+
 	InputCatcherComponent = Owner->GetComponentByClass<UInputCatcherComponent>();
 	MoveComponent = Owner->GetComponentByClass<UMoveComponent>();
 	DodgeComponent = Owner->GetComponentByClass<UDodgeComponent>();
 	JumpComponent = Owner->GetComponentByClass<UJumpComponent>();
-	Character = Cast<ACharacter>(Owner);
+	AttackComponent = Owner->GetComponentByClass<UAttackComponent>();
+
 
 	if (InputCatcherComponent)
 	{
@@ -39,8 +43,8 @@ void UInputManagerComponent::Init()
 		
 		InputCatcherComponent->OnInputDodgeRunJump.AddDynamic(this, &UInputManagerComponent::OnInputDodgeRunJump);
 
-		InputCatcherComponent->OnInputAttackWeak.AddDynamic(this, &UInputManagerComponent::OnInputAttackWeak);
-		InputCatcherComponent->OnInputAttackStrong.AddDynamic(this, &UInputManagerComponent::OnInputAttackStrong);
+		InputCatcherComponent->OnInputRightAttackWeak.AddDynamic(this, &UInputManagerComponent::OnInputRightAttackWeak);
+		InputCatcherComponent->OnInputRightAttackStrong.AddDynamic(this, &UInputManagerComponent::OnInputRightAttackStrong);
 	}
 }
 
@@ -111,13 +115,25 @@ void UInputManagerComponent::OnInputDodgeRunJump(const FInputActionInstance Inpu
 	}
 }
 
-void UInputManagerComponent::OnInputAttackWeak(const FInputActionInstance InputActionInstance, const bool IsPressed) 
+void UInputManagerComponent::OnInputRightAttackWeak(const FInputActionInstance InputActionInstance, const bool IsPressed) 
 {
-	
+	if (IsPressed)
+	{
+		if (AttackComponent)
+		{
+			AttackComponent->RightWeak();
+		}
+	}
 }
 
-void UInputManagerComponent::OnInputAttackStrong(const FInputActionInstance InputActionInstance, const bool IsPressed) 
+void UInputManagerComponent::OnInputRightAttackStrong(const FInputActionInstance InputActionInstance, const bool IsPressed) 
 {
-	
+	if (IsPressed)
+	{
+		if (AttackComponent)
+		{
+			AttackComponent->RightStrong();
+		}
+	}
 }
 

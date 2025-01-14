@@ -9,6 +9,7 @@ class UInputCatcherComponent;
 class UJumpComponent;
 class UDodgeComponent;
 class UMoveComponent;
+class UAttackComponent;
 class ACharacter;
 
 
@@ -63,6 +64,9 @@ private:
 	UJumpComponent* JumpComponent;
 	
 	UPROPERTY()
+	UAttackComponent* AttackComponent;
+	
+	UPROPERTY()
 	ACharacter* Character;
 
 private:
@@ -80,10 +84,10 @@ private:
 	void OnInputDodgeRunJump(const FInputActionInstance InputActionInstance, const bool IsPressed);
 	
 	UFUNCTION()
-	void OnInputAttackWeak(const FInputActionInstance InputActionInstance, const bool IsPressed);
+	void OnInputRightAttackWeak(const FInputActionInstance InputActionInstance, const bool IsPressed);
 
 	UFUNCTION()
-	void OnInputAttackStrong(const FInputActionInstance InputActionInstance, const bool IsPressed);
+	void OnInputRightAttackStrong(const FInputActionInstance InputActionInstance, const bool IsPressed);
 
 private:
 	virtual void BeginPlay() override;

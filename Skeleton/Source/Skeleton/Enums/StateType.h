@@ -14,4 +14,6 @@ enum class EStateType : uint8
 
 	DODGE = 6,
 	JUMP = 7,
+
+	ATTACK = 8,
 };
