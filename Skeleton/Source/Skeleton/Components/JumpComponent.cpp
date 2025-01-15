@@ -38,7 +38,7 @@ void UJumpComponent::Try()
 	EStateType State = StateComponent->GetState();
 	if (State != EStateType::MOVE) return;
 
-	if (StaminaComponent->GetStamina() < Stamina) return;
+	if (StaminaComponent->GetIsStaminaOver()) return;
 	StaminaComponent->Sub(Stamina);
 	
 	Jump();

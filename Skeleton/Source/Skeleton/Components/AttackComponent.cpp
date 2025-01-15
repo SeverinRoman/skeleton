@@ -80,23 +80,25 @@ void UAttackComponent::LeftStrong()
 
 void UAttackComponent::Attack(EAttackType AttackType)
 {
+	if (!StaminaComponent) return;
+	
 	if (AttackType == EAttackType::NONE) return;
 	
 	switch (AttackType) {
 	case EAttackType::LEFT_WEAK:
-		if (StaminaComponent->GetStamina() < StaminaWeakAttack) return;
+		if (StaminaComponent->GetIsStaminaOver()) return;
 		StaminaComponent->Sub(StaminaWeakAttack);
 		break;
 	case EAttackType::RIGHT_WEAK:
-		if (StaminaComponent->GetStamina() < StaminaWeakAttack) return;
+		if (StaminaComponent->GetIsStaminaOver()) return;
 		StaminaComponent->Sub(StaminaWeakAttack);
 		break;
 	case EAttackType::LEFT_STRONG:
-		if (StaminaComponent->GetStamina() < StaminaStrongAttack) return;
+		if (StaminaComponent->GetIsStaminaOver()) return;
 		StaminaComponent->Sub(StaminaStrongAttack);
 		break;
 	case EAttackType::RIGHT_STRONG:
-		if (StaminaComponent->GetStamina() < StaminaStrongAttack) return;
+		if (StaminaComponent->GetIsStaminaOver()) return;
 		StaminaComponent->Sub(StaminaStrongAttack);
 		break;
 	}

@@ -32,13 +32,15 @@ void UStaminaComponent::Init()
 	
 	if (World)
 	{
-		World->GetTimerManager().SetTimer(RegenerationTimerHandle, this, &UStaminaComponent::Regeneration, RegenerationDelay, true);
+		World->GetTimerManager().SetTimer(TimerHandleRegeneration, this, &UStaminaComponent::Regeneration, DelayRegeneration, true);
 	}
 }
 
 void UStaminaComponent::Regeneration()
 {
 	if (!StateComponent || !MoveComponent) return;
+
+	if (IsStaminaOver) return;
 
 	if (Deterioration()) return;
 
@@ -66,8 +68,6 @@ bool UStaminaComponent::Deterioration()
 
 void UStaminaComponent::Add(float Add)
 {
-	if (IsStaminaOver) return;
-	
 	float NewHealth = CurrentStamina + Add;
 
 	if (NewHealth >= MaxStamina)
@@ -83,8 +83,6 @@ void UStaminaComponent::Add(float Add)
 
 void UStaminaComponent::Sub(float Sub)
 {
-	if (IsStaminaOver) return;
-	
 	float NewHealth = CurrentStamina - Sub;
 
 	if (NewHealth <= 0.f)
@@ -101,9 +99,13 @@ void UStaminaComponent::Sub(float Sub)
 
 void UStaminaComponent::Over()
 {
+	IsStaminaOver = true;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandleOver, [&]() { IsStaminaOver = false; }, DelayOver, false);
+	
+	
 	if (IsDebug)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Blue, TEXT("Health Over"));
+		GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Blue, TEXT("UStaminaComponent::Over"));
 	}
 
 	OnStaminaEnd.Broadcast();

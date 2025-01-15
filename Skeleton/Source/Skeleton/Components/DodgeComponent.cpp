@@ -36,9 +36,9 @@ void UDodgeComponent::Dodge()
 
 	if (State != EStateType::IDLE && State != EStateType::MOVE) return;
 
-	if (StaminaComponent->GetStamina() < Stamina) return;
-	
+	if (StaminaComponent->GetIsStaminaOver()) return;
 	StaminaComponent->Sub(Stamina);
+	
 	DodgeStart();
 }
 

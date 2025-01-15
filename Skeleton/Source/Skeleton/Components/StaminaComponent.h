@@ -33,6 +33,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	float GetPercentStamina() { return CurrentStamina / MaxStamina; };
+	
+public:
+	UFUNCTION()
+	float GetIsStaminaOver() { return IsStaminaOver; };
 
 public:
 	UPROPERTY(BlueprintAssignable)
@@ -43,7 +47,9 @@ public:
 
 private:
 	UPROPERTY(EditDefaultsOnly)
-	float RegenerationDelay = 0.1f;
+	float DelayRegeneration = 0.1f;
+
+	float DelayOver = 2.f;
 	
 	UPROPERTY(EditDefaultsOnly)
 	float MaxStamina = 100.f;
@@ -69,7 +75,10 @@ private:
 	AActor* Owner;
 	
 	UPROPERTY()
-	FTimerHandle RegenerationTimerHandle;	
+	FTimerHandle TimerHandleRegeneration;
+
+	UPROPERTY()
+	FTimerHandle TimerHandleOver;	
 	
 	UPROPERTY()
 	float CurrentStamina;
