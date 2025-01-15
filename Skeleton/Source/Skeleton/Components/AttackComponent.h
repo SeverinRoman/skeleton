@@ -9,6 +9,7 @@ class UWeaponComponent;
 class UAnimationComponent;
 class UStateComponent;
 class UStaminaComponent;
+class UCharacterMovementComponent;
 
 enum class EWeaponRightType : uint8;
 enum class EWeaponLeftType : uint8;
@@ -42,6 +43,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void AttackEnd();
 
+	UFUNCTION(BlueprintCallable)
+	void AttackRotation();
+
 public:
 	UFUNCTION()
 	void RightWeak();
@@ -62,11 +66,13 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	float StaminaStrongAttack = 20.f;
 	
+	UPROPERTY(EditDefaultsOnly)
+	float RotationDuration =0.1f;
+	
 private:
 	UPROPERTY(VisibleInstanceOnly)
 	EWeaponRightType WeaponRight;
-
-
+	
 	UPROPERTY(VisibleInstanceOnly)
 	EWeaponLeftType WeaponLeft;
 
@@ -82,8 +88,17 @@ private:
 	
 	UPROPERTY()
 	UStaminaComponent* StaminaComponent;
+	
+	UPROPERTY()
+	UCharacterMovementComponent* CharacterMovementComponent;
 
 private:
+	UPROPERTY()
+	UWorld* World;
+	
+	UPROPERTY()
+	AActor* Owner;
+	
 	UPROPERTY()
 	int Combo = 0;
 	
