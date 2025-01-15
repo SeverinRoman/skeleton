@@ -6,7 +6,7 @@
 
 #include "StateComponent.h"
 #include "AnimationComponent.h"
-#include "AnimationType.h"
+// #include "AnimationType.h"
 #include "StaminaComponent.h"
 
 

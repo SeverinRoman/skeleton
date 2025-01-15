@@ -176,8 +176,7 @@ void UAttackComponent::AttackRotation()
 	if (!CharacterMovementComponent || !World) return;
 	
 	CharacterMovementComponent->bAllowPhysicsRotationDuringAnimRootMotion = true;
-	// CharacterMovementComponent->RotationRate = FRotator(CharacterMovementComponent->RotationRate.Pitch, CharacterMovementComponent->RotationRate.Yaw, CharacterMovementComponent->RotationRate.Roll * 2);
-
+	
 	FTimerHandle AttackRotationTimerHandle;
 	World->GetTimerManager().SetTimer(AttackRotationTimerHandle, [&]()
 		{

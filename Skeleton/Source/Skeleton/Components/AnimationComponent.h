@@ -11,6 +11,7 @@ class USkeletalMeshComponent;
 
 enum class EStandByAnimationType: uint8;
 enum class EAnimationType: uint8;
+enum class ELandingAnimationType: uint8;
 
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -30,6 +31,9 @@ public:
 
 public:
 	UFUNCTION()
+	void PlayLanding(ELandingAnimationType AnimationLanding);
+	
+	UFUNCTION()
 	void PlaySword(ESwordAnimationType StandByAnimation);
 	
 	UFUNCTION()
@@ -48,12 +52,18 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 	TMap<ESwordAnimationType, UAnimMontage*> SwordAnimations;
 	
+	UPROPERTY(EditDefaultsOnly)
+	TMap<ELandingAnimationType, UAnimMontage*> LandingAnimations;
+	
 private:
 	UPROPERTY()
 	AActor* Owner;
 	
 	UPROPERTY()
 	UAnimInstance* AnimInstance;
+
+	UPROPERTY()
+	TArray<UAnimInstance*> AnimInstances;
 
 private:
 	UPROPERTY()
