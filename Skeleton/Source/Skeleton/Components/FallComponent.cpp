@@ -37,9 +37,6 @@ void UFallComponent::Init()
 
 void UFallComponent::OnLanded(const FHitResult& Hit)
 {
-	if (!StateComponent) return;
-	StateComponent->SetState(EStateType::LANDING);
-	
 	float Speed = StateComponent->GetVelocity().Z;
 	
 	if (IsDebug)
@@ -56,6 +53,13 @@ void UFallComponent::OnLanded(const FHitResult& Hit)
 		{
 			LandingConfig = Element;
 		}
+	}
+
+	if (LandingConfig.AnimationLanding == ELandingAnimationType::NONE) return;
+
+	if (StateComponent)
+	{
+		StateComponent->SetState(EStateType::LANDING);
 	}
 	
 	if (AnimationComponent)

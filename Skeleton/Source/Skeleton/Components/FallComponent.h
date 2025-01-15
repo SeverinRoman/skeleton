@@ -19,10 +19,10 @@ struct FLandingConfig
 	GENERATED_BODY()
 
 	UPROPERTY(EditDefaultsOnly)
-	float Speed = 500.f;
+	float Speed = 0.f;
 
 	UPROPERTY(EditDefaultsOnly)
-	float Damage = 10.f;
+	float Damage = 0.f;
 	
 	UPROPERTY(EditDefaultsOnly)
 	ELandingAnimationType AnimationLanding = ELandingAnimationType::NONE;
