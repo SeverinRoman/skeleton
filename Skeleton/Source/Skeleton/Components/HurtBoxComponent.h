@@ -18,7 +18,7 @@ public:
 
 private:
 	UPROPERTY(EditDefaultsOnly)
-	TArray<FName> NameHurtBoxes;
+	FName TagHurtBox = "hurtbox";
 
 	UPROPERTY(EditDefaultsOnly)
 	bool IsDebug = false;

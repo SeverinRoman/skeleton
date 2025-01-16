@@ -28,18 +28,14 @@ void UHurtBoxComponent::AddHurtBoxes()
 {
 	if (!Owner) return;
 	
-	for (auto Element : NameHurtBoxes)
-	{
-		UActorComponent* ActorComponent = Owner->FindComponentByTag(UShapeComponent::StaticClass(), Element);
+	TArray<UActorComponent*> ActorComponents = Owner->GetComponentsByTag(UShapeComponent::StaticClass(), TagHurtBox);
+	if (ActorComponents.Num() == 0) return;
 
+	for (UActorComponent* ActorComponent : ActorComponents)
+	{
 		if (ActorComponent)
 		{
-			UShapeComponent* ShapeComponent = Cast<UShapeComponent>(ActorComponent);
-			
-			if (ShapeComponent)
-			{
-				HurtBoxes.Add(ShapeComponent);
-			}
+			HurtBoxes.Add(Cast<UShapeComponent>(ActorComponent));
 		}
 	}
 }
@@ -52,7 +48,7 @@ void UHurtBoxComponent::ChangeVisibility(bool IsVisible)
 	{
 		if (HurtBox)
 		{
-			HurtBox->SetVisibility(IsVisible);
+			HurtBox->SetHiddenInGame(!IsVisible);
 		}
 	}
 }
