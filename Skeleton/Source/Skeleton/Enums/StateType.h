@@ -18,4 +18,6 @@ enum class EStateType : uint8
 	ATTACK = 8,
 
 	LANDING = 9,
+
+	DEAD = 10,
 };

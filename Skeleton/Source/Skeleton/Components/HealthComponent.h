@@ -5,6 +5,9 @@
 #include "HealthComponent.generated.h"
 
 
+class UDeadComponent;
+
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnHealthChange);
 
 
@@ -45,6 +48,12 @@ private:
 	bool IsDebug = false;
 
 private:
+	UPROPERTY()
+	AActor* Owner;
+	
+	UPROPERTY()
+	UDeadComponent* DeadComponent;
+	
 	UPROPERTY()
 	float CurrentHealth;
 

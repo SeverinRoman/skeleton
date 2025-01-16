@@ -27,6 +27,9 @@ public:
 	void Play(UAnimMontage* AnimMontage);
 	
 	UFUNCTION(BlueprintCallable)
+	void Pause();
+	
+	UFUNCTION(BlueprintCallable)
 	void Stop(float Blend = 0.1f);
 
 public:
@@ -84,6 +87,9 @@ private:
 	
 	UFUNCTION()
 	void StopAll(float Blend);
+	
+	UFUNCTION()
+	void PauseAll();
 	
 private:
 	virtual void BeginPlay() override;

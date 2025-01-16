@@ -88,6 +88,27 @@ void UAnimationComponent::PlayAll(UAnimMontage* AnimMontage)
 	}
 }
 
+void UAnimationComponent::Pause()
+{
+	if (AnimInstance)
+	{
+		AnimInstance->Montage_Pause();
+	}
+	
+	PauseAll();
+}
+
+void UAnimationComponent::PauseAll()
+{
+	for (auto BufferAnimInstance : AnimInstances)
+	{
+		if (BufferAnimInstance)
+		{
+			BufferAnimInstance->Montage_Pause();
+		}
+	}
+}
+
 void UAnimationComponent::PlayStandBy(EStandByAnimationType StandByAnimation)
 {
 	if (StandByAnimation == EStandByAnimationType::NONE) return;

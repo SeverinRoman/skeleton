@@ -1,5 +1,7 @@
 #include "HealthComponent.h"
 
+#include "DeadComponent.h"
+
 
 UHealthComponent::UHealthComponent()
 {
@@ -14,6 +16,13 @@ void UHealthComponent::BeginPlay()
 
 void UHealthComponent::Init()
 {
+	Owner = GetOwner();
+	
+	if (Owner)
+	{
+		DeadComponent = Owner->GetComponentByClass<UDeadComponent>();
+	}
+	
 	CurrentHealth = StartHealth;
 
 	OnHealthChange.Broadcast();
@@ -57,6 +66,11 @@ void UHealthComponent::Sub(float Sub)
 void UHealthComponent::Over()
 {
 	IsHealthOver = true;
+
+	if (DeadComponent)
+	{
+		DeadComponent->Dead();
+	}
 
 	if (IsDebug)
 	{

@@ -34,6 +34,12 @@ public:
 	UFUNCTION()
 	void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent);
 
+	UFUNCTION()
+	void SetInput(bool bSetInput) { if (bSetInput == IsSetInput) return; bSetInput ? BindInputs() : UnBindInputs()  ; bSetInput = IsSetInput; };
+
+	UFUNCTION()
+	bool GetInput() { return IsSetInput; };
+
 public:
 	UPROPERTY(BlueprintAssignable)
 	FOnInputMove OnInputMove;
@@ -87,8 +93,15 @@ private:
 	AController* Controller;
 
 private:
+	UPROPERTY()
+	bool IsSetInput = true;
+	
+private:
 	UFUNCTION()
 	void BindInputs();
+	
+	UFUNCTION()
+	void UnBindInputs();
 
 private:
 	UFUNCTION()

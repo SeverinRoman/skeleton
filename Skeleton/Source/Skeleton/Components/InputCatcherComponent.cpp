@@ -64,3 +64,10 @@ void UInputCatcherComponent::BindInputs()
 	EnhancedInputComponent->BindAction(StrongAttackAction, ETriggerEvent::Completed, this, &UInputCatcherComponent::OnInputAttackStrongCompleted);
 }
 
+void UInputCatcherComponent::UnBindInputs()
+{
+	if (!EnhancedInputComponent) return;
+	
+	EnhancedInputComponent->ClearActionBindings();
+}
+
