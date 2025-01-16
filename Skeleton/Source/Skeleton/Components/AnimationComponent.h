@@ -54,6 +54,9 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly)
 	TMap<ELandingAnimationType, UAnimMontage*> LandingAnimations;
+
+	UPROPERTY(EditDefaultsOnly)
+	FName TagSkeletalMesh = "skeletal_mesh";
 	
 private:
 	UPROPERTY()
@@ -72,6 +75,15 @@ private:
 private:
 	UFUNCTION()
 	void Init();
+
+	UFUNCTION()
+	void InitAnimInstances();
+	
+	UFUNCTION()
+	void PlayAll(UAnimMontage* AnimMontage);
+	
+	UFUNCTION()
+	void StopAll(float Blend);
 	
 private:
 	virtual void BeginPlay() override;

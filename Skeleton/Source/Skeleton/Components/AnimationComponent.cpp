@@ -27,9 +27,14 @@ void UAnimationComponent::Init()
 	
 	AnimInstance = SkeletalMeshComponent->GetAnimInstance();
 
+	InitAnimInstances();
+}
 
-	TArray<UActorComponent*> ActorComponents = Owner->GetComponentsByTag(USkeletalMeshComponent::StaticClass(),FName("ragdoll"));
-	UE_LOG(LogTemp, Warning, TEXT("URagdollComponent::SetLeaderPoseComponent %d"), ActorComponents.Num());
+void UAnimationComponent::InitAnimInstances()
+{
+	if (!Owner) return;
+	
+	TArray<UActorComponent*> ActorComponents = Owner->GetComponentsByTag(USkeletalMeshComponent::StaticClass(), TagSkeletalMesh);
 	if (ActorComponents.Num() == 0) return;
 	
 	for (auto ActorComponent : ActorComponents)
@@ -66,9 +71,17 @@ void UAnimationComponent::Play(UAnimMontage* AnimMontage)
 		AnimInstance->Montage_Play(AnimMontage);
 	}
 
-	if (!AnimInstances.Num() == 0)
+	PlayAll(AnimMontage);
+}
+
+void UAnimationComponent::PlayAll(UAnimMontage* AnimMontage)
+{
+	if (!AnimMontage) return;
+	if (AnimInstances.Num() == 0) return;
+	
+	for (auto BufferAnimInstance : AnimInstances)
 	{
-		for (auto BufferAnimInstance : AnimInstances)
+		if (BufferAnimInstance)
 		{
 			BufferAnimInstance->Montage_Play(AnimMontage);
 		}
@@ -100,13 +113,28 @@ void UAnimationComponent::PlayLanding(ELandingAnimationType AnimationLanding)
 }
 
 void UAnimationComponent::Stop(float Blend)
+ {
+ 	if (!AnimInstance) return;
+ 	
+ 	UAnimMontage* ActiveMontage =  AnimInstance->GetCurrentActiveMontage();
+ 	if (ActiveMontage)
+ 	{
+ 		AnimInstance->Montage_Stop(Blend, ActiveMontage);
+ 	}
+ 	
+ 	StopAll(Blend);
+ }
+
+void UAnimationComponent::StopAll(float Blend)
 {
-	if (AnimInstance)
+	if (AnimInstances.Num() == 0) return;
+
+	for (auto BufferAnimInstance : AnimInstances)
 	{
-		UAnimMontage* ActiveMontage =  AnimInstance->GetCurrentActiveMontage();
+		UAnimMontage* ActiveMontage =  BufferAnimInstance->GetCurrentActiveMontage();
 		if (ActiveMontage)
 		{
-			AnimInstance->Montage_Stop(Blend, ActiveMontage);
+			BufferAnimInstance->Montage_Stop(Blend, ActiveMontage);
 		}
 	}
 }
