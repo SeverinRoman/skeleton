@@ -6,7 +6,7 @@
 #include "StateComponent.h"
 #include "StaminaComponent.h"
 
-#include "GameFramework/CharacterMovementComponent.h"
+// #include "GameFramework/CharacterMovementComponent.h"
 
 
 UAttackComponent::UAttackComponent()
@@ -30,7 +30,7 @@ void UAttackComponent::Init()
 	AnimationComponent = Owner->FindComponentByClass<UAnimationComponent>();
 	StateComponent = Owner->FindComponentByClass<UStateComponent>();
 	StaminaComponent = Owner->FindComponentByClass<UStaminaComponent>();
-	CharacterMovementComponent = Owner->FindComponentByClass<UCharacterMovementComponent>();
+	// CharacterMovementComponent = Owner->FindComponentByClass<UCharacterMovementComponent>();
 
 	UpdateWeapon();
 }
@@ -169,20 +169,6 @@ void UAttackComponent::SwordAnimationStrong()
 	
 	Combo++;
 	if (Combo == 1) Combo = 0;
-}
-
-void UAttackComponent::AttackRotation()
-{
-	if (!CharacterMovementComponent || !World) return;
-	
-	CharacterMovementComponent->bAllowPhysicsRotationDuringAnimRootMotion = true;
-	
-	FTimerHandle AttackRotationTimerHandle;
-	World->GetTimerManager().SetTimer(AttackRotationTimerHandle, [&]()
-		{
-			if (!CharacterMovementComponent) return;
-			CharacterMovementComponent->bAllowPhysicsRotationDuringAnimRootMotion = false;
-		}, RotationDuration, false);
 }
 
 void UAttackComponent::CheckCombo()

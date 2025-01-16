@@ -31,8 +31,11 @@ public:
 	UMoveComponent();
 
 public:
+	UFUNCTION(BlueprintCallable)
+	void ToggleMontageRotation(bool bIsEnable);
+	
 	UFUNCTION()
-	void ToggleRotation(bool bIsRotation);
+	void ToggleRotation(bool bIsEnable);
 	
 	UFUNCTION()
 	EMoveType GetMove() { return CurrentMove; };

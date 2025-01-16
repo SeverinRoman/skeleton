@@ -93,11 +93,11 @@ void UMoveComponent::Walk()
 	CurrentMove = EMoveType::WALK;
 }
 
-void UMoveComponent::ToggleRotation(bool bIsRotation)
+void UMoveComponent::ToggleRotation(bool bIsEnable)
 {
-	if (bIsRotation == IsEnableRotation) return;
+	if (bIsEnable == IsEnableRotation) return;
 
-	if (bIsRotation)
+	if (bIsEnable)
 	{
 		CharacterMovementComponent->RotationRate = SaveRotationRate;
 	}
@@ -106,7 +106,14 @@ void UMoveComponent::ToggleRotation(bool bIsRotation)
 		CharacterMovementComponent->RotationRate = FRotator::ZeroRotator;
 	}
 	
-	IsEnableRotation = bIsRotation;
+	IsEnableRotation = bIsEnable;
+}
+
+void UMoveComponent::ToggleMontageRotation(bool bIsEnable)
+{
+	if (!CharacterMovementComponent) return;
+	
+	CharacterMovementComponent->bAllowPhysicsRotationDuringAnimRootMotion = bIsEnable;
 }
 
 void UMoveComponent::Move(float X, float Y)

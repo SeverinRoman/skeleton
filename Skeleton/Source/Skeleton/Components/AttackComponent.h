@@ -9,7 +9,7 @@ class UWeaponComponent;
 class UAnimationComponent;
 class UStateComponent;
 class UStaminaComponent;
-class UCharacterMovementComponent;
+// class UCharacterMovementComponent;
 
 enum class EWeaponRightType : uint8;
 enum class EWeaponLeftType : uint8;
@@ -42,9 +42,6 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void AttackEnd();
-
-	UFUNCTION(BlueprintCallable)
-	void AttackRotation();
 
 public:
 	UFUNCTION()
@@ -89,8 +86,8 @@ private:
 	UPROPERTY()
 	UStaminaComponent* StaminaComponent;
 	
-	UPROPERTY()
-	UCharacterMovementComponent* CharacterMovementComponent;
+	// UPROPERTY()
+	// UCharacterMovementComponent* CharacterMovementComponent;
 
 private:
 	UPROPERTY()
