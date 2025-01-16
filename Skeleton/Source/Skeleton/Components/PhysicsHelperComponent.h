@@ -6,6 +6,7 @@
 
 
 class USkeletalMeshComponent;
+class UAnimationComponent;
 
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -36,6 +37,10 @@ private:
 	
 	UPROPERTY()
 	TArray<UStaticMeshComponent*>  StaticMeshComponents;
+	
+private:
+	UPROPERTY()
+	UAnimationComponent* AnimationComponent;
 
 private:
 	UPROPERTY()

@@ -1,6 +1,6 @@
 #include "DeadComponent.h"
 
-#include "AnimationComponent.h"
+// #include "AnimationComponent.h"
 #include "InputCatcherComponent.h"
 #include "PhysicsHelperComponent.h"
 #include "StateComponent.h"
@@ -25,7 +25,7 @@ void UDeadComponent::Init()
 	StateComponent = Owner->GetComponentByClass<UStateComponent>();
 	PhysicsHelperComponent = Owner->GetComponentByClass<UPhysicsHelperComponent>();
 	InputCatcherComponent = Owner->GetComponentByClass<UInputCatcherComponent>();
-	AnimationComponent = Owner->GetComponentByClass<UAnimationComponent>();
+	// AnimationComponent = Owner->GetComponentByClass<UAnimationComponent>();
 }
 
 void UDeadComponent::Dead()
@@ -48,10 +48,10 @@ void UDeadComponent::Dead()
 		PhysicsHelperComponent->EnablePhysics();
 	}
 
-	if (AnimationComponent)
-	{
-		AnimationComponent->Pause();
-	}
+	// if (AnimationComponent)
+	// {
+	// 	AnimationComponent->Pause();
+	// }
 }
 
 

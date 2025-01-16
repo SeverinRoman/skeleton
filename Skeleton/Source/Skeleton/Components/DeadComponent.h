@@ -8,7 +8,7 @@
 class UStateComponent;
 class UPhysicsHelperComponent;
 class UInputCatcherComponent;
-class UAnimationComponent;
+// class UAnimationComponent;
 
 
 UCLASS(Blueprintable, BlueprintType, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -40,8 +40,8 @@ private:
 	UPROPERTY()
 	UInputCatcherComponent* InputCatcherComponent;
 	
-	UPROPERTY()
-	UAnimationComponent* AnimationComponent;
+	// UPROPERTY()
+	// UAnimationComponent* AnimationComponent;
 
 private:
 	UFUNCTION()

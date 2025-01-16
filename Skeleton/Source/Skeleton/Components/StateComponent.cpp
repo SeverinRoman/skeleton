@@ -1,6 +1,7 @@
 #include "StateComponent.h"
 
 #include "KismetAnimationLibrary.h"
+#include "MoveComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 
@@ -26,7 +27,29 @@ void UStateComponent::Init()
 	Owner = GetOwner();
 	if (!Owner) return;
 
+	MoveComponent = Owner->GetComponentByClass<UMoveComponent>();
 	CharacterMovementComponent = Owner->GetComponentByClass<UCharacterMovementComponent>();
+}
+
+void UStateComponent::SetState(EStateType NewState)
+{
+	if (State == NewState) return;
+
+	ChangeState();
+	
+	State = NewState;
+	OnStateChange.Broadcast(NewState);
+}
+
+void UStateComponent::ChangeState()
+{
+	if (State == EStateType::NONE) return;
+	if (!MoveComponent) return;
+
+	if (State == EStateType::FALLING)
+	{
+		MoveComponent->ToggleRotation(true);
+	}
 }
 
 void UStateComponent::Update()
@@ -50,7 +73,12 @@ void UStateComponent::UpdateState()
 {
 	if (CharacterMovementComponent->IsFalling())
 	{
-		State = EStateType::FALLING;
+		SetState(EStateType::FALLING);
+		
+		if (MoveComponent)
+		{
+			MoveComponent->ToggleRotation(false);
+		}
 		return;
 	}
 
@@ -58,10 +86,10 @@ void UStateComponent::UpdateState()
 	{
 		if (Speed == 0.f)
 		{
-			State = EStateType::IDLE;
+			SetState(EStateType::IDLE);
 		}else
 		{
-			State = EStateType::MOVE;
+			SetState(EStateType::MOVE);
 		}
 	}
 }

@@ -6,8 +6,8 @@
 
 #include "StateComponent.h"
 #include "AnimationComponent.h"
-// #include "AnimationType.h"
 #include "StaminaComponent.h"
+#include "Chaos/BoundingVolumeUtilities.h"
 
 
 UMoveComponent::UMoveComponent()
@@ -56,6 +56,11 @@ void UMoveComponent::Init()
 		Sprint();
 		break;
 	}
+
+	if (CharacterMovementComponent)
+	{
+		SaveRotationRate = CharacterMovementComponent->RotationRate;
+	}
 }
 
 void UMoveComponent::Sprint()
@@ -88,6 +93,22 @@ void UMoveComponent::Walk()
 	CurrentMove = EMoveType::WALK;
 }
 
+void UMoveComponent::ToggleRotation(bool bIsRotation)
+{
+	if (bIsRotation == IsEnableRotation) return;
+
+	if (bIsRotation)
+	{
+		CharacterMovementComponent->RotationRate = SaveRotationRate;
+	}
+	else
+	{
+		CharacterMovementComponent->RotationRate = FRotator::ZeroRotator;
+	}
+	
+	IsEnableRotation = bIsRotation;
+}
+
 void UMoveComponent::Move(float X, float Y)
 {
 	if (Character)
@@ -103,8 +124,8 @@ void UMoveComponent::Move(float X, float Y)
 		RotatorY.Pitch = 0.f;
 		
 		FVector DirectionY = UKismetMathLibrary::GetRightVector(RotatorY);
-		
-		
+
+
 		Character->AddMovementInput(DirectionX, X);
 		Character->AddMovementInput(DirectionY, Y);
 	}

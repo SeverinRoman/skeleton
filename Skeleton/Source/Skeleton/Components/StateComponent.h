@@ -8,6 +8,7 @@
 
 
 class UCharacterMovementComponent;
+class UMoveComponent;
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStateChange, EStateType, StateType);
@@ -26,7 +27,7 @@ public:
 	EStateType GetState() { return State; };
 
 	UFUNCTION(BlueprintCallable)
-	void SetState(EStateType NewState) { if (State == NewState) return; State = NewState; OnStateChange.Broadcast(NewState); };
+	void SetState(EStateType NewState);
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
@@ -50,6 +51,9 @@ private:
 	UPROPERTY()
 	UCharacterMovementComponent* CharacterMovementComponent;
 	
+	UPROPERTY()
+	UMoveComponent* MoveComponent;
+	
 private:
 	UPROPERTY()
 	AActor* Owner;
@@ -69,6 +73,9 @@ private:
 private:
 	UFUNCTION()
 	void Init();
+	
+	UFUNCTION()
+	void ChangeState();
 	
 	UFUNCTION()
 	void Update();

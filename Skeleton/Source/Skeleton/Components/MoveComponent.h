@@ -32,6 +32,9 @@ public:
 
 public:
 	UFUNCTION()
+	void ToggleRotation(bool bIsRotation);
+	
+	UFUNCTION()
 	EMoveType GetMove() { return CurrentMove; };
 
 public:
@@ -62,14 +65,20 @@ private:
 	EMoveType StartMove;
 
 private:
+	UPROPERTY(VisibleInstanceOnly)
+	EMoveType CurrentMove;
+	
 	UPROPERTY()
 	AActor* Owner;
 	
 	UPROPERTY()
 	ACharacter* Character;
-
-	UPROPERTY(EditDefaultsOnly)
-	EMoveType CurrentMove;
+	
+	UPROPERTY()
+	bool IsEnableRotation = true;
+	
+	UPROPERTY()
+	FRotator SaveRotationRate;
 
 private:
 	UPROPERTY()

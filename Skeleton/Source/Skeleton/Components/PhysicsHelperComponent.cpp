@@ -1,5 +1,7 @@
 #include "PhysicsHelperComponent.h"
 
+#include "AnimationComponent.h"
+
 #include "Components/SkeletalMeshComponent.h"
 
 
@@ -18,6 +20,11 @@ void UPhysicsHelperComponent::Init()
 {
 	World = GetWorld();
 	Owner = GetOwner();
+
+	if (Owner)
+	{
+		AnimationComponent = Owner->GetComponentByClass<UAnimationComponent>();
+	}
 	
 	InitSkeletalMesh();
 	InitStaticMesh();
@@ -72,6 +79,11 @@ void UPhysicsHelperComponent::EnablePhysics()
 	{
 		EnablePhysicsSkeletalMesh();
 		EnablePhysicsStaticMesh();
+
+		if (AnimationComponent)
+		{
+			AnimationComponent->Pause();
+		}
 		
 	}, PhysicsDelay, false);
 }
