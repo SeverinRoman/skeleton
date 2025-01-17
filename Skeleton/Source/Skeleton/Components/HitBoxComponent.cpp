@@ -1,6 +1,7 @@
 #include "HitBoxComponent.h"
 
 #include "WeaponRightType.h"
+#include "Kismet/GameplayStatics.h"
 
 
 UHitBoxComponent::UHitBoxComponent()
@@ -20,12 +21,13 @@ void UHitBoxComponent::Init()
 	World = GetWorld();
 }
 
-void UHitBoxComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UHitBoxComponent::BeginHitBox()
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	HitActors.Empty();
+	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green, TEXT("UHitBoxComponent::BeginHitBox"));
 }
 
-void UHitBoxComponent::ToggleHitBox(EWeaponRightType WeaponRightType)
+void UHitBoxComponent::TickHitBox(EWeaponRightType WeaponRightType)
 {
 	if (!World) return;
 	if (!Owner) return;
@@ -43,24 +45,48 @@ void UHitBoxComponent::ToggleHitBox(EWeaponRightType WeaponRightType)
 	FVector End = StaticMeshComponent->GetSocketLocation(HitBoxConfigs[WeaponRightType].SocketEnd);
 	
 	FQuat Rotation = StaticMeshComponent->GetSocketRotation(HitBoxConfigs[WeaponRightType].SocketStart).Quaternion();
-	// FQuat Rotation = FQuat::Identity;
 
 	float Radius = HitBoxConfigs[WeaponRightType].Radius;
 	float HalfHeight = HitBoxConfigs[WeaponRightType].HalfHeight;
 	
 	FCollisionShape CollisionShape = FCollisionShape::MakeCapsule(Radius, HalfHeight);
-	CollisionShape.Capsule.Radius = Radius;
-	CollisionShape.Capsule.HalfHeight = HalfHeight;
 	
-	World->SweepSingleByProfile(OutHit, Start, End, Rotation, CollisionProfileName.Name, CollisionShape);
+	World->SweepSingleByProfile(OutHit, Start, Start, Rotation, CollisionProfileName.Name, CollisionShape);
 	
 	if (IsDebug)
 	{
-		DrawDebugCapsule(World, Start, HalfHeight, Radius, Rotation, FColor::Green, false, 0.1f);
-		// GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Blue, FString::Printf(TEXT("My Location is: %s"), ( OutHit.IsValidBlockingHit() ? TEXT("true") : TEXT("false") )));
+		DrawDebugCapsule(World, Start, HalfHeight, Radius, Rotation, FColor::Green, false, 0.05f);// Таймаут 1 секунда для удобства наблюдения
 	}
-	
+
+	AActor* HitActor = OutHit.GetActor();
+	HitHitBox(HitActor, HitBoxConfigs[WeaponRightType]);
 }
+
+void UHitBoxComponent::HitHitBox(AActor* Actor, FHitBoxConfig HitBoxConfig)
+{
+	if (!Actor || !Owner) return;
+	if (Actor == Owner) return;
+	
+	if (HitActors.Contains(Actor)) return;
+	HitActors.Add(Actor);
+	
+	APawn* Pawn = Owner->GetInstigator();
+	if (Pawn)
+	{
+		AController* Controller = Pawn->GetController();
+		if (Controller)
+		{
+			UGameplayStatics::ApplyDamage(Actor, HitBoxConfig.Damage, Controller, Owner, HitBoxConfig.DamageTypeClass);
+
+			if (IsDebug)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green, FString::Printf(TEXT("UHitBoxComponent::HitHitBox: %s"), *Actor->GetName()));
+			}
+		}
+	}
+}
+
+
 
 
 

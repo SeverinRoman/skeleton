@@ -4,6 +4,10 @@
 #include "GameFramework/Character.h"
 #include "EnemyCharacter.generated.h"
 
+
+class UHealthComponent;
+
+
 UCLASS()
 class SKELETON_API AEnemyCharacter : public ACharacter
 {
@@ -12,9 +16,17 @@ class SKELETON_API AEnemyCharacter : public ACharacter
 public:
 	AEnemyCharacter();
 
-private:	
+private:
+	UHealthComponent* HealthComponent;
+
+private:
+	UFUNCTION()
+	void Init();
+
+private:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual float TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 };

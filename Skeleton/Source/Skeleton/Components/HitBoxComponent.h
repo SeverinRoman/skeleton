@@ -24,6 +24,9 @@ public:
 	
 	UPROPERTY(EditDefaultsOnly)
 	float Damage = 10.f;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UDamageType> DamageTypeClass;
 
 	UPROPERTY(EditDefaultsOnly)
 	FVector Offset = FVector::ZeroVector;
@@ -49,7 +52,10 @@ public:
 	UHitBoxComponent();
 
 	UFUNCTION(BlueprintCallable)
-	void ToggleHitBox(EWeaponRightType WeaponRightType);
+	void BeginHitBox();
+
+	UFUNCTION(BlueprintCallable)
+	void TickHitBox(EWeaponRightType WeaponRightType);
 
 private:
 	UPROPERTY(EditDefaultsOnly)
@@ -68,12 +74,17 @@ private:
 	UPROPERTY()
 	AActor* Owner;
 
+	UPROPERTY()
+	TArray<AActor*> HitActors;
+
 private:
 	UFUNCTION()
 	void Init();
 	
+	UFUNCTION()
+	void HitHitBox(AActor* Actor, FHitBoxConfig HitBoxConfig);
+	
 private:
 	virtual void BeginPlay() override;
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
 };

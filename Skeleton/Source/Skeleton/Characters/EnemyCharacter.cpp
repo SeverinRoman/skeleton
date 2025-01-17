@@ -1,5 +1,7 @@
 #include "EnemyCharacter.h"
 
+#include "HealthComponent.h"
+
 
 AEnemyCharacter::AEnemyCharacter()
 {
@@ -10,7 +12,7 @@ AEnemyCharacter::AEnemyCharacter()
 void AEnemyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	Init();
 }
 
 void AEnemyCharacter::Tick(float DeltaTime)
@@ -23,5 +25,21 @@ void AEnemyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+float AEnemyCharacter::TakeDamage(float Damage, struct FDamageEvent const& DamageEvent, AController* EventInstigator,
+	AActor* DamageCauser)
+{
+	if (HealthComponent)
+	{
+		HealthComponent->Sub(Damage);
+	}
+	
+	return Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+}
+
+void AEnemyCharacter::Init()
+{
+	HealthComponent = GetComponentByClass<UHealthComponent>();
 }
 
