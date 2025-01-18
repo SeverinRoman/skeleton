@@ -52,10 +52,10 @@ public:
 	UHitBoxComponent();
 
 	UFUNCTION(BlueprintCallable)
-	void BeginHitBox();
+	void BeginHit();
 
 	UFUNCTION(BlueprintCallable)
-	void TickHitBox(EWeaponRightType WeaponRightType);
+	void TickHit(EWeaponRightType WeaponRightType);
 
 private:
 	UPROPERTY(EditDefaultsOnly)
@@ -82,7 +82,7 @@ private:
 	void Init();
 	
 	UFUNCTION()
-	void HitHitBox(AActor* Actor, FHitBoxConfig HitBoxConfig);
+	void HitHit(AActor* Actor, FHitBoxConfig HitBoxConfig);
 	
 private:
 	virtual void BeginPlay() override;

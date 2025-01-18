@@ -21,13 +21,12 @@ void UHitBoxComponent::Init()
 	World = GetWorld();
 }
 
-void UHitBoxComponent::BeginHitBox()
+void UHitBoxComponent::BeginHit()
 {
 	HitActors.Empty();
-	GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Green, TEXT("UHitBoxComponent::BeginHitBox"));
 }
 
-void UHitBoxComponent::TickHitBox(EWeaponRightType WeaponRightType)
+void UHitBoxComponent::TickHit(EWeaponRightType WeaponRightType)
 {
 	if (!World) return;
 	if (!Owner) return;
@@ -50,19 +49,22 @@ void UHitBoxComponent::TickHitBox(EWeaponRightType WeaponRightType)
 	float HalfHeight = HitBoxConfigs[WeaponRightType].HalfHeight;
 	
 	FCollisionShape CollisionShape = FCollisionShape::MakeCapsule(Radius, HalfHeight);
+
+	FCollisionQueryParams CollisionParams;
+	CollisionParams.AddIgnoredActor(Owner);
 	
-	World->SweepSingleByProfile(OutHit, Start, Start, Rotation, CollisionProfileName.Name, CollisionShape);
+	World->SweepSingleByProfile(OutHit, Start, Start, Rotation, CollisionProfileName.Name, CollisionShape, CollisionParams);
 	
 	if (IsDebug)
 	{
-		DrawDebugCapsule(World, Start, HalfHeight, Radius, Rotation, FColor::Green, false, 0.05f);// Таймаут 1 секунда для удобства наблюдения
+		DrawDebugCapsule(World, Start, HalfHeight, Radius, Rotation, FColor::Green, false, 0.05f);
 	}
 
 	AActor* HitActor = OutHit.GetActor();
-	HitHitBox(HitActor, HitBoxConfigs[WeaponRightType]);
+	HitHit(HitActor, HitBoxConfigs[WeaponRightType]);
 }
 
-void UHitBoxComponent::HitHitBox(AActor* Actor, FHitBoxConfig HitBoxConfig)
+void UHitBoxComponent::HitHit(AActor* Actor, FHitBoxConfig HitBoxConfig)
 {
 	if (!Actor || !Owner) return;
 	if (Actor == Owner) return;
@@ -85,7 +87,6 @@ void UHitBoxComponent::HitHitBox(AActor* Actor, FHitBoxConfig HitBoxConfig)
 		}
 	}
 }
-
 
 
 
